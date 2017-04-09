@@ -8,4 +8,3 @@ type Provider interface {
 	Get(id string) (command.Command, error)
 	Order() []string
 }
-

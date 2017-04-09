@@ -34,6 +34,3 @@ func (lo *ListOperation) Exec(props api.Properties) api.Result {
 
 	return res.Result()
 }
-
-
-

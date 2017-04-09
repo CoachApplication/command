@@ -11,7 +11,7 @@ const (
 )
 
 // GetOperation Operation to retrieve a single Command
-type GetOperation struct {}
+type GetOperation struct{}
 
 // Id Return string Id for the operation
 func (gop *GetOperation) Id() string {

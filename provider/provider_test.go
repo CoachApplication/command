@@ -1,10 +1,10 @@
 package provider_test
 
 import (
+	"errors"
 	"github.com/CoachApplication/api"
 	command "github.com/CoachApplication/command"
 	command_provider "github.com/CoachApplication/command/provider"
-	"errors"
 )
 
 type TestProvider struct {
@@ -36,9 +36,7 @@ func (tp *TestProvider) Order() []string {
 	return ids
 }
 
-
 type TestCommand struct {
-
 }
 
 // Id Unique string machine name identifier for the Operation

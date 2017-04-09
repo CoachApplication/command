@@ -9,8 +9,7 @@ const (
 	OPERATION_ID_COMMAND_LIST = "command.list"
 )
 
-
-type ListOperation struct {}
+type ListOperation struct{}
 
 // Id Return string Id for the operation
 func (lop *ListOperation) Id() string {

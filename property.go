@@ -3,13 +3,13 @@ package command
 import (
 	"github.com/CoachApplication/api"
 	"github.com/CoachApplication/base"
-	base_property "github.com/CoachApplication/base/property"
 	base_errors "github.com/CoachApplication/base/errors"
+	base_property "github.com/CoachApplication/base/property"
 )
 
 const (
-	PROPERTY_ID_COMMAND_ID = "command.id"
-	PROPERTY_ID_COMMAND_FLAGS = "command.flags"
+	PROPERTY_ID_COMMAND_ID      = "command.id"
+	PROPERTY_ID_COMMAND_FLAGS   = "command.flags"
 	PROPERTY_ID_COMMAND_COMMAND = "command.command"
 )
 
@@ -73,7 +73,6 @@ func (ip *IdsProperty) Usage() api.Usage {
 	return base.ReadonlyPropertyUsage{}.Usage()
 }
 
-
 type FlagsProperty struct {
 	base_property.StringSliceProperty
 }
@@ -97,7 +96,6 @@ func (fp *FlagsProperty) Ui() api.Ui {
 func (fp *FlagsProperty) Usage() api.Usage {
 	return base.OptionalPropertyUsage{}.Usage()
 }
-
 
 // IdProperty Property for command Id string
 type CommandProperty struct {
