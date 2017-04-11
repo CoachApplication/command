@@ -44,12 +44,13 @@ func (gop *GetOperation) Properties() api.Properties {
 func (gop *GetOperation) Validate(props api.Properties) api.Result {
 	res := base.NewResult()
 
-	if idProp, good := props.Get(PROPERTY_ID_COMMAND_ID); good {
+	if idProp, err := props.Get(PROPERTY_ID_COMMAND_ID); err != nil {
 		res.MarkFailed()
+		res.AddError(err)
 		res.AddError(error(base_errors.RequiredPropertyWasEmptyError{Key: PROPERTY_ID_COMMAND_ID}))
 	} else if val, ok := idProp.Get().(string); !ok {
 		res.MarkFailed()
-		res.AddError(error(base_errors.PropertyWrongValueTypeError{Id: PROPERTY_ID_COMMAND_ID, ExpectedType: "string"}))
+		res.AddError(error(base_errors.PropertyWrongValueTypeError{Id: PROPERTY_ID_COMMAND_ID, Type: "string", Val: val}))
 	} else if val == "" {
 		res.MarkFailed()
 		res.AddError(error(base_errors.RequiredPropertyWasEmptyError{Key: PROPERTY_ID_COMMAND_ID}))

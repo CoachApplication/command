@@ -29,12 +29,13 @@ func (gop *GetOperation) Exec(props api.Properties) api.Result {
 	res := base.NewResult()
 
 	go func(props api.Properties) {
-		if idProp, good := props.Get(command.PROPERTY_ID_COMMAND_ID); good {
+		if idProp, err := props.Get(command.PROPERTY_ID_COMMAND_ID); err != nil {
 			res.MarkFailed()
+			res.AddError(err)
 			res.AddError(error(base_errors.RequiredPropertyWasEmptyError{Key: command.PROPERTY_ID_COMMAND_ID}))
 		} else if val, ok := idProp.Get().(string); !ok {
 			res.MarkFailed()
-			res.AddError(error(base_errors.PropertyWrongValueTypeError{Id: command.PROPERTY_ID_COMMAND_ID, ExpectedType: "string"}))
+			res.AddError(error(base_errors.PropertyWrongValueTypeError{Id: command.PROPERTY_ID_COMMAND_ID, Type: "string", Val: val}))
 		} else if val == "" {
 			res.MarkFailed()
 			res.AddError(error(base_errors.RequiredPropertyWasEmptyError{Key: command.PROPERTY_ID_COMMAND_ID}))

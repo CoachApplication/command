@@ -145,7 +145,7 @@ func (cp *CommandProperty) Get() interface{} {
 // Set assign a value to the Property
 func (cp *CommandProperty) Set(val interface{}) error {
 	if typedVal, ok := val.(Command); !ok {
-		return error(base_property.PropertyValWrongType{Id: cp.Id(), Type: cp.Type(), Val: val})
+		return error(base_errors.PropertyWrongValueTypeError{Id: cp.Id(), Type: cp.Type(), Val: val})
 	} else {
 		cp.val = typedVal
 		return nil

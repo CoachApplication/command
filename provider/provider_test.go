@@ -2,8 +2,7 @@ package provider_test
 
 import (
 	"errors"
-	"github.com/CoachApplication/api"
-	"github.com/CoachApplication/base"
+
 	command "github.com/CoachApplication/command"
 	command_provider "github.com/CoachApplication/command/provider"
 )

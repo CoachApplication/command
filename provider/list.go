@@ -20,13 +20,21 @@ func (lo *ListOperation) Properties() api.Properties {
 	return base.NewProperties().Properties()
 }
 
+func (lo *ListOperation) Validate(props api.Properties) api.Result {
+	if lo.provider == nil {
+		return base.MakeFailedResult()
+	} else {
+		return base.MakeSuccessfulResult()
+	}
+}
+
 func (lo *ListOperation) Exec(props api.Properties) api.Result {
 	res := base.NewResult()
 
 	go func(provider Provider) {
 		idsProp := command.IdsProperty{}
 		idsProp.Set(provider.Order())
-		res.AddProperty(idsProp)
+		res.AddProperty(idsProp.Property())
 
 		res.MarkSucceeded()
 		res.MarkFinished()
