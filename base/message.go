@@ -1,10 +1,12 @@
 package base
 
 import (
-	"fmt"
+	"io"
+
 	"github.com/CoachApplication/api"
 	"github.com/CoachApplication/base"
 	"github.com/CoachApplication/base/property"
+	"os"
 )
 
 const (
@@ -19,6 +21,22 @@ type MessageCommand struct {
 
 func NewMessageCommand(id string) *MessageCommand {
 	return &MessageCommand{id: id}
+}
+
+func NewParametrizedMessageCommandProperties(msg []byte, out io.Writer) api.Properties {
+	com := &MessageCommand{id: "test"}
+
+	props := com.Properties()
+	messageProp, _ := props.Get(PROPERTY_ID_MESSAGE)
+	messageProp.Set(msg)
+	messageOutputProp, _ := props.Get(PROPERTY_ID_MESSAGEOUTPUT)
+	if out == nil {
+		messageOutputProp.Set(os.Stdout)
+	} else {
+		messageOutputProp.Set(out)
+	}
+
+	return props
 }
 
 func (mc *MessageCommand) Id() string {
@@ -54,7 +72,17 @@ func (mc *MessageCommand) Validate(props api.Properties) api.Result {
 		if messageProp, err := props.Get(PROPERTY_ID_MESSAGE); err != nil {
 			res.MarkFailed()
 			res.AddError(err)
-		} else if message := messageProp.Get().(string); message == "" {
+		} else if message := messageProp.Get().([]byte); len(message) == 0 {
+			res.MarkFailed()
+		} else {
+			res.MarkSucceeded()
+		}
+		if outputProp, err := props.Get(PROPERTY_ID_MESSAGEOUTPUT); err != nil {
+			res.MarkFailed()
+			res.AddError(err)
+		} else if output, good := outputProp.Get().(io.Writer); !good {
+			res.MarkFailed()
+		} else if output == nil {
 			res.MarkFailed()
 		} else {
 			res.MarkSucceeded()
@@ -73,10 +101,19 @@ func (mc *MessageCommand) Exec(props api.Properties) api.Result {
 		if messageProp, err := props.Get(PROPERTY_ID_MESSAGE); err != nil {
 			res.MarkFailed()
 			res.AddError(err)
-		} else if message := messageProp.Get().(string); message == "" {
+		} else if message := messageProp.Get().([]byte); len(message) == 0 {
 			res.MarkFailed()
 		} else {
-			fmt.Print(message)
+			if messageOutputProp, err := props.Get(PROPERTY_ID_MESSAGEOUTPUT); err != nil {
+				res.MarkFailed()
+				res.AddError(err)
+			} else if out, good := messageOutputProp.Get().(io.Writer); !good {
+				res.MarkFailed()
+			} else if out == nil {
+				res.MarkFailed()
+			} else if _, err := out.Write(message); err !=nil {
+
+			}
 		}
 
 		res.MarkFinished()
@@ -86,7 +123,7 @@ func (mc *MessageCommand) Exec(props api.Properties) api.Result {
 }
 
 type MessageProperty struct {
-	property.StringProperty
+	property.ByteSliceProperty
 }
 
 func (mp *MessageProperty) Property() api.Property {

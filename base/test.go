@@ -1,100 +1,14 @@
-package command
+package base
+
+import "github.com/CoachApplication/base"
 
 import (
-	"context"
 	"errors"
-	"testing"
-	"time"
 
 	"github.com/CoachApplication/api"
-	"github.com/CoachApplication/base"
+	"github.com/CoachApplication/command"
 	base_test "github.com/CoachApplication/base/test"
 )
-
-func TestTestCommandId(t *testing.T) {
-	com := NewTestCommand("test")
-
-	id := com.Id()
-	if id != "test" {
-		t.Error("TestCommand Id() returned the wrong value")
-	}
-}
-
-// test our test command struct (and demonstrate what it is expected to do
-func TestTestComand_Validate(t *testing.T) {
-	dur, _ := time.ParseDuration("2s")
-	ctx, _ := context.WithTimeout(context.Background(), dur)
-
-	com := NewTestCommand("test")
-
-	props := com.Properties()
-	if validProp, err := props.Get(base_test.PROPERTY_ID_OPERATIONVALID); err != nil {
-		t.Error("TestCommand Properties() did not provide a ValidProperty")
-	} else {
-		validProp.Set(false)
-		res := com.Validate(props)
-		select {
-		case <-res.Finished():
-			if res.Success() {
-				t.Error("TestCommand thinks it is valid when it shouldn't be")
-			}
-		case <-ctx.Done():
-			t.Error("TestCommand Validate timed out: ", ctx.Err().Error())
-		}
-
-		validProp.Set(true)
-		res = com.Validate(props)
-		select {
-		case <-res.Finished():
-			if !res.Success() {
-				t.Error("TestCommand thinks it is invald when it shouldn't be")
-			}
-		case <-ctx.Done():
-			t.Error("TestCommand Validate timed out: ", ctx.Err().Error())
-		}
-	}
-}
-
-// test our test command struct (and demonstrate what it is expected to do
-func TestTestComand_Exec_Success(t *testing.T) {
-	dur, _ := time.ParseDuration("2s")
-	ctx, _ := context.WithTimeout(context.Background(), dur)
-
-	com := NewTestCommand("test")
-
-	props := com.Properties()
-	if successProp, err := props.Get(base_test.PROPERTY_ID_OPERATIONSUCCESS); err != nil {
-		t.Error("TestCommand Properties() did not provide a SuccessdProperty")
-	} else {
-		successProp.Set(false)
-		res := com.Exec(props)
-		select {
-		case <-res.Finished():
-			if res.Success() {
-				t.Error("TestCommand Exec succeeds when it shouldn't")
-			}
-		case <-ctx.Done():
-			t.Error("TestCommand Exec timed out: ", ctx.Err().Error())
-		}
-
-		successProp.Set(true)
-		res = com.Exec(props)
-		select {
-		case <-res.Finished():
-			if !res.Success() {
-				t.Error("TestCommand Exec fails when it shouldn't")
-			}
-		case <-ctx.Done():
-			t.Error("TestCommand Exec timedout: ", ctx.Err().Error())
-		}
-	}
-}
-
-// test our test command struct (and demonstrate what it is expected to do
-func TestTestComand_Exec_Value(t *testing.T) {
-	// com := NewTestCommand()
-
-}
 
 const (
 	OPERATION_ID_TEST = "command.test"
@@ -114,8 +28,8 @@ func NewTestCommand(id string) *TestCommand {
 }
 
 // Command explicitly convert this into a Command interface
-func (tc *TestCommand) Command() Command {
-	return Command(tc)
+func (tc *TestCommand) Command() command.Command {
+	return command.Command(tc)
 }
 
 // Id Unique string machine name identifier for the Operation
@@ -197,3 +111,4 @@ func (tc *TestCommand) Exec(props api.Properties) api.Result {
 
 	return res.Result()
 }
+
