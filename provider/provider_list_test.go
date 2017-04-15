@@ -8,13 +8,13 @@ import (
 	command_provider "github.com/CoachApplication/command/provider"
 )
 
-func TestListProvider_Get(t *testing.T) {
+func TestListProvider_AddGet(t *testing.T) {
 	prov := command_provider.NewListProvider()
 
 	prov.Add(command_base.NewTestCommand("one"))
 	
 	if getCmd, err := prov.Get("one"); err != nil {
-		t.Error("ListPRovider returned an error when retrieving the Added Command")
+		t.Error("ListPRovider returned an error when retrieving the Added Command: ", err.Error())
 	} else if getCmd.Id() != "one" {
 		t.Error("ListProvider Get() Command gave the wrong Id()")
 	}
