@@ -11,6 +11,8 @@ const (
 	PROPERTY_ID_COMMAND_ID      = "command.id"
 	PROPERTY_ID_COMMAND_FLAGS   = "command.flags"
 	PROPERTY_ID_COMMAND_COMMAND = "command.command"
+	PROPERTY_ID_COMMAND_ENV     = "command.env"
+	PROPERTY_ID_COMMAND_ARGS    = "command.args"
 )
 
 // IdProperty Property for command Id string
@@ -150,4 +152,54 @@ func (cp *CommandProperty) Set(val interface{}) error {
 		cp.val = typedVal
 		return nil
 	}
+}
+
+type ArgsProperty struct {
+	base_property.StringSliceProperty
+}
+
+func (sfp *ArgsProperty) Property() api.Property {
+	return api.Property(sfp)
+}
+
+func (sfp *ArgsProperty) Id() string {
+	return PROPERTY_ID_COMMAND_ARGS
+}
+
+func (sfp *ArgsProperty) Ui() api.Ui {
+	return base.NewUi(
+		sfp.Id(),
+		"arguments",
+		"Executable arguments",
+		"",
+	)
+}
+
+func (sfp *ArgsProperty) Usage() api.Usage {
+	return base.OptionalPropertyUsage{}.Usage()
+}
+
+type EnvProperty struct {
+	base_property.StringSliceProperty
+}
+
+func (sep *EnvProperty) Id() string {
+	return PROPERTY_ID_COMMAND_ENV
+}
+
+func (sep *EnvProperty) Property() api.Property {
+	return api.Property(sep)
+}
+
+func (sep *EnvProperty) Ui() api.Ui {
+	return base.NewUi(
+		sep.Id(),
+		"environment variable",
+		"Environment variables to use for execution",
+		"",
+	)
+}
+
+func (sep *EnvProperty) Usage() api.Usage {
+	return base.OptionalPropertyUsage{}.Usage()
 }
