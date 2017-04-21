@@ -75,30 +75,6 @@ func (ip *IdsProperty) Usage() api.Usage {
 	return base.ReadonlyPropertyUsage{}.Usage()
 }
 
-type FlagsProperty struct {
-	base_property.StringSliceProperty
-}
-
-// Id provides a machine name string for the property.  This should be unique in an operation.
-func (fp *FlagsProperty) Id() string {
-	return PROPERTY_ID_COMMAND_FLAGS
-}
-
-// Ui Provide UI metadata for the Property
-func (fp *FlagsProperty) Ui() api.Ui {
-	return base.NewUi(
-		fp.Id(),
-		"Command flags",
-		"Ordered set of string flags for the command",
-		"",
-	).Ui()
-}
-
-// Usage Provide Usage information about the element
-func (fp *FlagsProperty) Usage() api.Usage {
-	return base.OptionalPropertyUsage{}.Usage()
-}
-
 // IdProperty Property for command Id string
 type CommandProperty struct {
 	val Command
