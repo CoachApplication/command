@@ -13,6 +13,12 @@ type GetOperation struct {
 	provider Provider
 }
 
+func NewGetOperation(prov Provider) *GetOperation {
+	return &GetOperation{
+		provider: prov,
+	}
+}
+
 func (gop *GetOperation) Operation() api.Operation {
 	return api.Operation(gop)
 }

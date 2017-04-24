@@ -12,6 +12,12 @@ type ListOperation struct {
 	provider Provider
 }
 
+func NewListOperation(prov Provider) *ListOperation {
+	return &ListOperation{
+		provider: prov,
+	}
+}
+
 func (lo *ListOperation) Operation() api.Operation {
 	return api.Operation(lo)
 }

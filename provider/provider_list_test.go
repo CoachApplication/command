@@ -10,7 +10,6 @@ import (
 
 func TestListProvider_AddGet(t *testing.T) {
 	prov := command_provider.NewListProvider()
-
 	prov.Add(command_base.NewTestCommand("one"))
 	
 	if getCmd, err := prov.Get("one"); err != nil {
@@ -22,7 +21,6 @@ func TestListProvider_AddGet(t *testing.T) {
 
 func TestListProvider_Order(t *testing.T) {
 	prov := command_provider.NewListProvider()
-
 	prov.Add(command_base.NewMessageCommand("one"))
 	prov.Add(command_base.NewTestCommand("two"))
 	prov.Add(command_base.NewMessageCommand("three"))
