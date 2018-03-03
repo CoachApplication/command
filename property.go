@@ -9,7 +9,6 @@ import (
 
 const (
 	PROPERTY_ID_COMMAND_ID      = "command.id"
-	PROPERTY_ID_COMMAND_FLAGS   = "command.flags"
 	PROPERTY_ID_COMMAND_COMMAND = "command.command"
 	PROPERTY_ID_COMMAND_ENV     = "command.env"
 	PROPERTY_ID_COMMAND_ARGS    = "command.args"
